@@ -1,16 +1,18 @@
-import { Link } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 
-export default function ModalScreen() {
+export default function PortfolioScreen() {
+  const { t } = useTranslation();
+
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title">This is a modal</ThemedText>
-      <Link href="/" dismissTo style={styles.link}>
-        <ThemedText type="link">Go to home screen</ThemedText>
-      </Link>
+      <ThemedText type="title">{t('portfolio.title')}</ThemedText>
+      <ThemedText type="default" style={styles.placeholder}>
+        {t('portfolio.comingSoon')}
+      </ThemedText>
     </ThemedView>
   );
 }
@@ -21,9 +23,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
+    gap: 16,
   },
-  link: {
-    marginTop: 15,
-    paddingVertical: 15,
+  placeholder: {
+    opacity: 0.6,
   },
 });

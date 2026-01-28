@@ -1,0 +1,26 @@
+{
+  "app": {
+    "name": "cocos challenge"
+  },
+  "home": {
+    "totalBalance": "Total Balance",
+    "portfolio": "Portfolio",
+    "market": "Market",
+    "yourInvestments": "Your investments here",
+    "quotesAndTrends": "Quotes and trends"
+  },
+  "portfolio": {
+    "title": "Portfolio",
+    "comingSoon": "Coming soon..."
+  },
+  "market": {
+    "title": "Market",
+    "comingSoon": "Coming soon..."
+  },
+  "configuration": {
+    "title": "Settings",
+    "language": "Language",
+    "comingSoon": "Coming soon..."
+  },
+  "currency": "USD"
+}
