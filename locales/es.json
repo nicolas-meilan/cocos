@@ -20,6 +20,11 @@
   "configuration": {
     "title": "Configuración",
     "language": "Idioma",
+    "theme": "Tema",
+    "english": "English",
+    "spanish": "Español",
+    "light": "☀️ Light",
+    "dark": "🌙 Dark",
     "comingSoon": "Próximamente..."
   },
   "currency": "USD"

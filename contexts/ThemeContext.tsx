@@ -11,7 +11,6 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  // Inicializar con el tema del sistema
   const systemColorScheme = (useColorScheme() ?? 'light') as Theme;
   const [theme, setTheme] = useState<Theme>(systemColorScheme);
 

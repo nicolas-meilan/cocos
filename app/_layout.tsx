@@ -21,8 +21,7 @@ function RootLayoutContent() {
         <Stack.Screen 
           name="configuration" 
           options={{ 
-            title: 'Configuración',
-            headerShown: true,
+            headerShown: false,
           }} 
         />
       </Stack>

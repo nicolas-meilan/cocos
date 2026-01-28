@@ -1,19 +1,17 @@
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import Text from '@/components/Text';
+import { View } from 'react-native';
 
 export default function PortfolioScreen() {
   const { t } = useTranslation();
 
   return (
-    <ThemedView style={styles.container}>
-      <ThemedText type="title">{t('portfolio.title')}</ThemedText>
-      <ThemedText type="default" style={styles.placeholder}>
-        {t('portfolio.comingSoon')}
-      </ThemedText>
-    </ThemedView>
+    <View style={styles.container}>
+      <Text size="large" color="primary" i18nKey="portfolio.title" />
+      <Text size="medium" color="secondary" style={styles.placeholder} i18nKey="portfolio.comingSoon" />
+    </View>
   );
 }
 
@@ -22,7 +20,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
     gap: 16,
   },
   placeholder: {

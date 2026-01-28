@@ -1,8 +1,8 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
+import { StyleSheet } from 'react-native';
 
-import { HapticTab } from '@/components/HapticTab';
-import { Icon } from '@/components/Icon';
+import Icon from '@/components/Icon';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from 'react-native';
 
@@ -14,7 +14,10 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
-        tabBarButton: HapticTab,
+        tabBarStyle: styles.tabBar,
+        tabBarItemStyle: styles.tabBarItem,
+        tabBarLabelStyle: styles.tabBarLabel,
+        tabBarShowLabel: true,
       }}>
       <Tabs.Screen
         name="portfolio"
@@ -33,3 +36,30 @@ export default function TabLayout() {
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  tabBar: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'transparent',
+    borderTopWidth: 0,
+    paddingHorizontal: 20,
+    paddingBottom: 16,
+    paddingTop: 12,
+    height: 80,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  tabBarItem: {
+    marginRight: 8,
+    borderRadius: 20,
+    paddingHorizontal: 0,
+    marginTop: 0,
+  },
+  tabBarLabel: {
+    fontSize: 12,
+    marginTop: 8,
+  },
+});

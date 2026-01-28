@@ -3,7 +3,7 @@ import { useAppTheme } from '@/contexts/ThemeContext';
 
 export function useTheme(
   props: { light?: string; dark?: string },
-  colorName: keyof typeof Colors.light & keyof typeof Colors.dark
+  colorName: 'background' | 'tint' | 'icon' | 'tabIconDefault' | 'tabIconSelected'
 ) {
   const { theme } = useAppTheme();
   const colorFromProps = props[theme];
@@ -11,6 +11,6 @@ export function useTheme(
   if (colorFromProps) {
     return colorFromProps;
   } else {
-    return Colors[theme][colorName];
+    return Colors[theme][colorName] as string;
   }
 }

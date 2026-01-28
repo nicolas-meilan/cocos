@@ -1,125 +1,15 @@
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { Pressable, StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View } from 'react-native';
 
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { Colors } from '@/constants/theme';
+import Button from '@/components/Button';
+import Header from '@/components/Header';
+import Screen from '@/components/Screen';
+import Text from '@/components/Text';
 import { useAppTheme } from '@/contexts/ThemeContext';
+import { ColorsType, Theme, useStyles } from '@/hooks/useStyles';
 
-export default function ConfigurationScreen() {
-  const { t, i18n } = useTranslation();
-  const router = useRouter();
-  const { theme, setTheme } = useAppTheme();
-  const tintColor = Colors[theme].tint;
-
-  const handleLanguageChange = (language: string) => {
-    i18n.changeLanguage(language);
-  };
-
-  const handleThemeChange = (mode: 'light' | 'dark') => {
-    setTheme(mode);
-  };
-
-  return (
-    <SafeAreaView style={styles.safeArea} edges={['top']}>
-      <ThemedView style={styles.container}>
-        <ThemedText type="title">{t('configuration.title')}</ThemedText>
-        
-        <View style={styles.settingContainer}>
-          <ThemedText type="subtitle" style={styles.settingLabel}>
-            {t('configuration.language')}
-          </ThemedText>
-          
-          <View style={styles.languageButtons}>
-            <Pressable
-              style={[
-                styles.languageButton,
-                i18n.language === 'en' && { 
-                  backgroundColor: tintColor,
-                  borderColor: tintColor,
-                },
-              ]}
-              onPress={() => handleLanguageChange('en')}>
-              <ThemedText
-                style={[
-                  styles.languageButtonText,
-                  i18n.language === 'en' && { color: '#fff' },
-                ]}>
-                English
-              </ThemedText>
-            </Pressable>
-
-            <Pressable
-              style={[
-                styles.languageButton,
-                i18n.language === 'es' && { 
-                  backgroundColor: tintColor,
-                  borderColor: tintColor,
-                },
-              ]}
-              onPress={() => handleLanguageChange('es')}>
-              <ThemedText
-                style={[
-                  styles.languageButtonText,
-                  i18n.language === 'es' && { color: '#fff' },
-                ]}>
-                Español
-              </ThemedText>
-            </Pressable>
-          </View>
-        </View>
-
-        <View style={styles.settingContainer}>
-          <ThemedText type="subtitle" style={styles.settingLabel}>
-            Tema
-          </ThemedText>
-          
-          <View style={styles.themeButtons}>
-            <Pressable
-              style={[
-                styles.themeButton,
-                theme === 'light' && { 
-                  backgroundColor: tintColor,
-                  borderColor: tintColor,
-                },
-              ]}
-              onPress={() => handleThemeChange('light')}>
-              <ThemedText
-                style={[
-                  styles.themeButtonText,
-                  theme === 'light' && { color: '#fff' },
-                ]}>
-                ☀️ Light
-              </ThemedText>
-            </Pressable>
-
-            <Pressable
-              style={[
-                styles.themeButton,
-                theme === 'dark' && { 
-                  backgroundColor: tintColor,
-                  borderColor: tintColor,
-                },
-              ]}
-              onPress={() => handleThemeChange('dark')}>
-              <ThemedText
-                style={[
-                  styles.themeButtonText,
-                  theme === 'dark' && { color: '#fff' },
-                ]}>
-                🌙 Dark
-              </ThemedText>
-            </Pressable>
-          </View>
-        </View>
-      </ThemedView>
-    </SafeAreaView>
-  );
-}
-
-const styles = StyleSheet.create({
+export const createConfigurationStyles = (colors: ColorsType, theme: Theme) => ({
   safeArea: {
     flex: 1,
   },
@@ -135,38 +25,79 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   languageButtons: {
-    flexDirection: 'row',
+    flexDirection: 'row' as const,
     gap: 12,
-  },
-  languageButton: {
-    flex: 1,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-    alignItems: 'center',
-  },
-  languageButtonText: {
-    fontSize: 14,
-    fontWeight: '500',
   },
   themeButtons: {
-    flexDirection: 'row',
+    flexDirection: 'row' as const,
     gap: 12,
   },
-  themeButton: {
-    flex: 1,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  themeButtonText: {
-    fontSize: 14,
-    fontWeight: '500',
-  },
 });
+
+export type ConfigurationStyles = ReturnType<typeof createConfigurationStyles>;
+
+export default function ConfigurationScreen() {
+  const { i18n } = useTranslation();
+  const router = useRouter();
+  const { theme, setTheme } = useAppTheme();
+  const { styles } = useStyles(createConfigurationStyles);
+
+
+  const handleLanguageChange = (language: string) => {
+    i18n.changeLanguage(language);
+  };
+
+  const handleThemeChange = (mode: 'light' | 'dark') => {
+    setTheme(mode);
+  };
+
+  return (
+    <Screen style={styles.container}>
+      <Header
+        titleI18nKey="configuration.title"
+        leftIcon="arrow-back"
+        hasBack={true}
+        onPressLeftIcon={() => router.back()}
+      />
+      <View style={styles.settingContainer}>
+        <Text size="medium" color="primary" style={styles.settingLabel} i18nKey="configuration.language" />
+
+        <View style={styles.languageButtons}>
+          <Button
+            type={i18n.language === 'en' ? 'primary' : 'secondary'}
+            onPress={() => handleLanguageChange('en')}
+            style={{ flex: 1 }}>
+            {i18n.t('configuration.english')}
+          </Button>
+
+          <Button
+            type={i18n.language === 'es' ? 'primary' : 'secondary'}
+            onPress={() => handleLanguageChange('es')}
+            style={{ flex: 1 }}>
+            {i18n.t('configuration.spanish')}
+          </Button>
+        </View>
+      </View>
+
+      <View style={styles.settingContainer}>
+        <Text size="medium" color="primary" style={styles.settingLabel} i18nKey="configuration.theme" />
+
+        <View style={styles.themeButtons}>
+          <Button
+            type={theme === 'light' ? 'primary' : 'secondary'}
+            onPress={() => handleThemeChange('light')}
+            style={{ flex: 1 }}>
+            {i18n.t('configuration.light')}
+          </Button>
+
+          <Button
+            type={theme === 'dark' ? 'primary' : 'secondary'}
+            onPress={() => handleThemeChange('dark')}
+            style={{ flex: 1 }}>
+            {i18n.t('configuration.dark')}
+          </Button>
+        </View>
+      </View>
+    </Screen>
+  );
+}
