@@ -1,4 +1,4 @@
-import { useStyles } from '@/hooks/useStyles';
+import useStyles from '@/hooks/useStyles';
 import { TouchableOpacity, type ViewStyle } from 'react-native';
 import Text from './Text';
 

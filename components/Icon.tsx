@@ -1,4 +1,4 @@
-import { useStyles } from '@/hooks/useStyles';
+import useStyles from '@/hooks/useStyles';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { SymbolWeight } from 'expo-symbols';
 import { ComponentProps } from 'react';

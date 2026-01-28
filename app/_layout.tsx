@@ -1,16 +1,14 @@
-import '@/locales/i18n';
+import initializeI18n from '@/locales/i18n';
 import { DarkTheme, DefaultTheme, ThemeProvider as NavigationThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
-import { ThemeProvider, useAppTheme } from '@/contexts/ThemeContext';
+import ThemeProvider, { useAppTheme } from '@/contexts/ThemeContext';
 
-export const unstable_settings = {
-  anchor: 'index',
-};
+initializeI18n();
 
-function RootLayoutContent() {
+const RootLayoutContent = () => {
   const { theme } = useAppTheme();
 
   return (
@@ -28,12 +26,14 @@ function RootLayoutContent() {
       <StatusBar style="auto" />
     </NavigationThemeProvider>
   );
-}
+};
 
-export default function RootLayout() {
+const RootLayout = () => {
   return (
     <ThemeProvider>
       <RootLayoutContent />
     </ThemeProvider>
   );
-}
+};
+
+export default RootLayout;

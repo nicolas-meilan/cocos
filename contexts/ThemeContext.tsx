@@ -8,9 +8,17 @@ interface ThemeContextType {
   setTheme: (mode: Theme) => void;
 }
 
+export const useAppTheme = () => {
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error('useAppTheme must be used within a ThemeProvider');
+  }
+  return context;
+};
+
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export function ThemeProvider({ children }: { children: ReactNode }) {
+const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const systemColorScheme = (useColorScheme() ?? 'light') as Theme;
   const [theme, setTheme] = useState<Theme>(systemColorScheme);
 
@@ -25,10 +33,4 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function useAppTheme() {
-  const context = useContext(ThemeContext);
-  if (!context) {
-    throw new Error('useAppTheme must be used within a ThemeProvider');
-  }
-  return context;
-}
+export default ThemeProvider;

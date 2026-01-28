@@ -2,7 +2,7 @@ import { TouchableOpacity, View } from 'react-native';
 
 import Icon from '@/components/Icon';
 import { ColorsType } from '@/constants/theme';
-import { Theme, useStyles } from '@/hooks/useStyles';
+import useStyles, { type Theme } from '@/hooks/useStyles';
 import Text from './Text';
 
 interface HeaderProps {

@@ -7,7 +7,7 @@ import Header from '@/components/Header';
 import Screen from '@/components/Screen';
 import Text from '@/components/Text';
 import { useAppTheme } from '@/contexts/ThemeContext';
-import { ColorsType, Theme, useStyles } from '@/hooks/useStyles';
+import useStyles, { type ColorsType, type Theme } from '@/hooks/useStyles';
 
 export const createConfigurationStyles = (colors: ColorsType, theme: Theme) => ({
   safeArea: {
@@ -36,7 +36,7 @@ export const createConfigurationStyles = (colors: ColorsType, theme: Theme) => (
 
 export type ConfigurationStyles = ReturnType<typeof createConfigurationStyles>;
 
-export default function ConfigurationScreen() {
+const ConfigurationScreen = () => {
   const { i18n } = useTranslation();
   const router = useRouter();
   const { theme, setTheme } = useAppTheme();
@@ -100,4 +100,6 @@ export default function ConfigurationScreen() {
       </View>
     </Screen>
   );
-}
+};
+
+export default ConfigurationScreen;

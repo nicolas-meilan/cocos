@@ -1,5 +1,5 @@
 // Re-export Text con soporte adicional para i18nKey
-import { useStyles, type ColorsType } from '@/hooks/useStyles';
+import useStyles, { type ColorsType } from '@/hooks/useStyles';
 import { useTranslation } from 'react-i18next';
 import { Text as BaseText, type TextProps as BaseTextProps } from 'react-native';
 

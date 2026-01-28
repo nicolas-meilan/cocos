@@ -6,7 +6,7 @@ import Header from '@/components/Header';
 import Pill from '@/components/Pill';
 import Screen from '@/components/Screen';
 import Text from '@/components/Text';
-import { ColorsType, Theme, useStyles } from '@/hooks/useStyles';
+import useStyles, { type ColorsType, type Theme } from '@/hooks/useStyles';
 import { StyleProp, View, ViewStyle } from 'react-native';
 
 const createHomeStyles = (colors: ColorsType, theme: Theme) => ({
@@ -46,7 +46,7 @@ enum Tabs {
   Market = 'market',
 }
 
-export default function Home() {
+const Home = () => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<Tabs>(Tabs.Portfolio);
   const router = useRouter();
@@ -97,4 +97,6 @@ export default function Home() {
         </View>
       </Screen>
   );
-}
+};
+
+export default Home;

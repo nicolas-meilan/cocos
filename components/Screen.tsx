@@ -1,7 +1,7 @@
 import { View, type ViewProps } from 'react-native';
 
 import { ColorsType } from '@/constants/theme';
-import { useStyles } from '@/hooks/useStyles';
+import useStyles from '@/hooks/useStyles';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export type ScreenProps = ViewProps & {
