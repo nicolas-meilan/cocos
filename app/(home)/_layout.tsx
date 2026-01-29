@@ -10,6 +10,11 @@ import { debounce } from 'lodash';
 import { useCallback } from 'react';
 import { StyleProp, View, ViewStyle } from 'react-native';
 
+enum Tabs {
+  Portfolio = 'portfolio',
+  Market = 'market',
+}
+
 const createHomeStyles = (colors: ColorsType, theme: Theme) => ({
   balance: {
     alignItems: 'center',
@@ -42,11 +47,6 @@ const createHomeStyles = (colors: ColorsType, theme: Theme) => ({
   },
 });
 
-enum Tabs {
-  Portfolio = 'portfolio',
-  Market = 'market',
-}
-
 const TABS_DEBOUNCE = 500;
 const TABS_DEBOUNCE_CONFIG = {
   leading: true,
@@ -66,20 +66,24 @@ const Home = () => {
   const isMarketTab = pathname.endsWith(`/${Tabs.Market}`);
 
   const goToPortfolio = useCallback(debounce(() => {
-    router.push(`/home/${Tabs.Portfolio}`);
+    router.push(`/${Tabs.Portfolio}`);
   }, TABS_DEBOUNCE, TABS_DEBOUNCE_CONFIG), []);
 
   const goToMarket = useCallback(debounce(() => {
-    router.push(`/home/${Tabs.Market}`);
+    router.push(`/${Tabs.Market}`);
+  }, TABS_DEBOUNCE, TABS_DEBOUNCE_CONFIG), []);
+
+  const goToConfiguration = useCallback(debounce(() => {
+    router.push('/configuration');
   }, TABS_DEBOUNCE, TABS_DEBOUNCE_CONFIG), []);
 
   return (
     <Screen>
       <Header
-        titleI18nKey="app.name"
+        title="app.name"
         leftIcon="account-circle"
         rightIcon="search"
-        onPressLeftIcon={() => router.push('/configuration')}
+        onPressLeftIcon={goToConfiguration}
       />
       <View style={styles.balance as StyleProp<ViewStyle>}>
         <Text size="small" i18nKey="home.totalBalance" />

@@ -3,11 +3,12 @@ import { TouchableOpacity, View } from 'react-native';
 import Icon from '@/components/Icon';
 import { ColorsType } from '@/constants/theme';
 import useStyles, { type Theme } from '@/hooks/useStyles';
+import { useRouter } from 'expo-router';
+import { useCallback } from 'react';
 import Text from './Text';
 
 interface HeaderProps {
   title?: string;
-  titleI18nKey?: string;
   leftIcon?: string;
   rightIcon?: string;
   hasBack?: boolean;
@@ -39,7 +40,6 @@ export type HeaderStyles = ReturnType<typeof createHeaderStyles>;
 
 const Header = ({
   title,
-  titleI18nKey,
   leftIcon,
   rightIcon,
   hasBack = false,
@@ -47,26 +47,26 @@ const Header = ({
   onPressRightIcon,
 }: HeaderProps) => {
   const { styles, colors } = useStyles(createHeaderStyles);
+  const router = useRouter();
+
+  const handlePressBack = useCallback(() => {
+    router.back();
+  }, [router]);
 
   return (
     <View style={styles.header}>
       <View style={styles.headerLeft}>
-        {hasBack && leftIcon ? (
-          <TouchableOpacity onPress={onPressLeftIcon} style={styles.backButton}>
-            <Icon size={24} name={leftIcon} color={colors.tint} />
+        {hasBack && (
+          <TouchableOpacity onPress={handlePressBack} style={styles.backButton}>
+            <Icon size={24} name="arrow-back" color={colors.tint} />
           </TouchableOpacity>
-        ) : leftIcon ? (
+        )}
+        {leftIcon && (
           <TouchableOpacity onPress={onPressLeftIcon}>
             <Icon size={28} name={leftIcon} color={colors.tint} />
           </TouchableOpacity>
-        ) : null}
-        {titleI18nKey ? (
-          <Text size="large" color="primary" style={styles.title} i18nKey={titleI18nKey} />
-        ) : (
-          <Text size="large" color="primary" style={styles.title}>
-            {title}
-          </Text>
         )}
+        <Text size="large" color="primary" style={styles.title} i18nKey={title} />
       </View>
       {rightIcon && (
         <TouchableOpacity onPress={onPressRightIcon}>

@@ -1,4 +1,3 @@
-import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Switch, TextStyle, View, ViewStyle } from 'react-native';
 
@@ -62,7 +61,6 @@ const DEBOUNCE_CONFIG = {
 
 const ConfigurationScreen = () => {
   const { i18n } = useTranslation();
-  const router = useRouter();
   const { theme, setTheme } = useAppTheme();
   const { styles, colors } = useStyles(createConfigurationStyles);
 
@@ -82,10 +80,8 @@ const ConfigurationScreen = () => {
   return (
     <Screen style={styles.container}>
       <Header
-        titleI18nKey="configuration.title"
-        leftIcon="arrow-back"
-        hasBack={true}
-        onPressLeftIcon={() => router.back()}
+        hasBack
+        title="configuration.title"
       />
       <View style={styles.settingContainer}>
         <Text size="medium" color="primary" style={styles.settingLabel} i18nKey="configuration.language" />

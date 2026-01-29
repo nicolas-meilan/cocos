@@ -17,15 +17,7 @@ const RootLayoutContent = () => {
 
   return (
     <NavigationThemeProvider value={theme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="home" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="configuration"
-          options={{
-            headerShown: false,
-          }}
-        />
-      </Stack>
+      <Stack screenOptions={{ headerShown: false }} />
       <StatusBar style="auto" />
     </NavigationThemeProvider>
   );
