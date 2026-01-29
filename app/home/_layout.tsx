@@ -6,6 +6,7 @@ import Pill from '@/components/Pill';
 import Screen from '@/components/Screen';
 import Text from '@/components/Text';
 import useStyles, { type ColorsType, type Theme } from '@/hooks/useStyles';
+import { debounce } from 'lodash';
 import { useCallback } from 'react';
 import { StyleProp, View, ViewStyle } from 'react-native';
 
@@ -46,6 +47,12 @@ enum Tabs {
   Market = 'market',
 }
 
+const TABS_DEBOUNCE = 500;
+const TABS_DEBOUNCE_CONFIG = {
+  leading: true,
+  trailing: false,
+};
+
 const Home = () => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -55,13 +62,16 @@ const Home = () => {
 
   const { styles } = useStyles(createHomeStyles);
 
-  const activeTab = pathname.endsWith(`/${Tabs.Portfolio}`)
-    ? Tabs.Portfolio
-    : Tabs.Market;
+  const isPortfolioTab = pathname.endsWith(`/${Tabs.Portfolio}`);
+  const isMarketTab = pathname.endsWith(`/${Tabs.Market}`);
 
-  const onPressPill = useCallback((tab: Tabs) => {
-    router.push(`/home/${tab}`);
-  }, []);
+  const goToPortfolio = useCallback(debounce(() => {
+    router.push(`/home/${Tabs.Portfolio}`);
+  }, TABS_DEBOUNCE, TABS_DEBOUNCE_CONFIG), []);
+
+  const goToMarket = useCallback(debounce(() => {
+    router.push(`/home/${Tabs.Market}`);
+  }, TABS_DEBOUNCE, TABS_DEBOUNCE_CONFIG), []);
 
   return (
     <Screen>
@@ -80,13 +90,13 @@ const Home = () => {
       </View>
       <View style={styles.tabContainer}>
         <Pill
-          isActive={activeTab === Tabs.Portfolio}
-          onPress={() => onPressPill(Tabs.Portfolio)}>
+          isActive={isPortfolioTab}
+          onPress={goToPortfolio}>
           {t('home.portfolio')}
         </Pill>
         <Pill
-          isActive={activeTab === Tabs.Market}
-          onPress={() => onPressPill(Tabs.Market)}>
+          isActive={isMarketTab}
+          onPress={goToMarket}>
           {t('home.market')}
         </Pill>
       </View>

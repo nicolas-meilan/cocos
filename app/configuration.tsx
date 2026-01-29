@@ -8,7 +8,8 @@ import Text from '@/components/Text';
 import { useAppTheme } from '@/contexts/ThemeContext';
 import useStyles, { type ColorsType, type Theme } from '@/hooks/useStyles';
 import { Picker } from '@react-native-picker/picker';
-import { useState } from 'react';
+import { debounce } from 'lodash';
+import { useCallback, useState } from 'react';
 
 type ConfigurationStylesType = {
   container: ViewStyle;
@@ -53,6 +54,12 @@ export const createConfigurationStyles = (colors: ColorsType, theme: Theme): Con
 
 export type ConfigurationStyles = ReturnType<typeof createConfigurationStyles>;
 
+const DEBOUNCE = 500;
+const DEBOUNCE_CONFIG = {
+  leading: true,
+  trailing: false,
+};
+
 const ConfigurationScreen = () => {
   const { i18n } = useTranslation();
   const router = useRouter();
@@ -62,15 +69,15 @@ const ConfigurationScreen = () => {
   const [selectedLanguage, setSelectedLanguage] = useState<string>(i18n.language);
   const [isDarkModeEnabled, setIsDarkModeEnabled] = useState<boolean>(theme === 'dark');
 
-  const handleLanguageChange = (language: string) => {
+  const handleLanguageChange = useCallback(debounce((language: string) => {
     i18n.changeLanguage(language);
     setSelectedLanguage(language);
-  };
+  }, DEBOUNCE, DEBOUNCE_CONFIG), []);
 
-  const handleThemeChange = (isEnabled: boolean) => {
+  const handleThemeChange = useCallback(debounce((isEnabled: boolean) => {
     setIsDarkModeEnabled(isEnabled);
     setTheme(isEnabled ? 'dark' : 'light');
-  };
+  }, DEBOUNCE, DEBOUNCE_CONFIG), []);
 
   return (
     <Screen style={styles.container}>
@@ -88,7 +95,7 @@ const ConfigurationScreen = () => {
             selectedValue={selectedLanguage}
             style={{ color: colors.text.primary }}
             dropdownIconColor={colors.text.primary}
-            onValueChange={(itemValue) => handleLanguageChange(itemValue)}
+            onValueChange={handleLanguageChange}
           >
             <Picker.Item label={i18n.t('configuration.english')} value="en" />
             <Picker.Item label={i18n.t('configuration.spanish')} value="es" />
