@@ -96,12 +96,12 @@ const Home = () => {
         <Pill
           isActive={isPortfolioTab}
           onPress={goToPortfolio}>
-          {t('home.portfolio')}
+          {t('portfolio.title')}
         </Pill>
         <Pill
           isActive={isMarketTab}
           onPress={goToMarket}>
-          {t('home.market')}
+          {t('market.title')}
         </Pill>
       </View>
       <Slot />

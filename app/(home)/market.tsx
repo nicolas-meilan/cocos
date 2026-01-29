@@ -6,7 +6,6 @@ const Markets = () => {
   return (
     <View>
       <Text size="medium" color="primary" i18nKey="market.title" />
-      <Text size="small" i18nKey="home.yourInvestments" />
     </View>
   )
 };

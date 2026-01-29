@@ -4,28 +4,21 @@
   },
   "home": {
     "totalBalance": "Saldo Total",
-    "portfolio": "Portfolio",
-    "market": "Mercado",
     "yourInvestments": "Tus inversiones aquí",
     "quotesAndTrends": "Cotizaciones y tendencias"
   },
   "portfolio": {
-    "title": "Portfolio",
-    "comingSoon": "Próximamente..."
+    "title": "Portfolio"
   },
   "market": {
-    "title": "Mercado",
-    "comingSoon": "Próximamente..."
+    "title": "Mercado"
   },
   "configuration": {
     "title": "Configuración",
     "language": "Idioma",
-    "theme": "Tema",
     "english": "English",
     "spanish": "Español",
-    "light": "☀️ Light",
-    "dark": "🌙 Dark",
-    "comingSoon": "Próximamente..."
+    "dark": "🌙 Modo oscuro"
   },
   "error": {
     "default": "Algo salió mal. Por favor, intenta nuevamente."

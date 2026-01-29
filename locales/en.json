@@ -4,28 +4,21 @@
   },
   "home": {
     "totalBalance": "Total Balance",
-    "portfolio": "Portfolio",
-    "market": "Market",
     "yourInvestments": "Your investments here",
     "quotesAndTrends": "Quotes and trends"
   },
   "portfolio": {
-    "title": "Portfolio",
-    "comingSoon": "Coming soon..."
+    "title": "Portfolio"
   },
   "market": {
-    "title": "Market",
-    "comingSoon": "Coming soon..."
+    "title": "Market"
   },
   "configuration": {
     "title": "Settings",
     "language": "Language",
-    "theme": "Theme",
     "english": "English",
     "spanish": "Español",
-    "light": "☀️ Light",
-    "dark": "🌙 Dark",
-    "comingSoon": "Coming soon..."
+    "dark": "🌙 Dark Mode"
   },
   "error": {
     "default": "Something went wrong. Please try again."
