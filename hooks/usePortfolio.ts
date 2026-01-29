@@ -1,10 +1,12 @@
 import { TANKSTANK_DEFAULT_OPTIONS } from '@/api/constants';
 import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import Api from '../api/Api';
 import { Portfolio } from '../api/endpoints/cocosChallengeEndpoints';
+import { useInAppNotification } from './useInAppNotification';
 
 
-type PortfolioType = {
+export type PortfolioType = {
   instrument_id: number;
   ticker: string;
   quantity: number;
@@ -21,6 +23,8 @@ const queryFn = async () => {
 };
 
 const usePortfolio = () => {
+  const { notifyError } = useInAppNotification();
+
   const {
       data,
       isLoading,
@@ -32,13 +36,19 @@ const usePortfolio = () => {
     queryKey: [queryKey],
     queryFn,
     ...TANKSTANK_DEFAULT_OPTIONS,
-
   });
+
+  const isPortfolioLoading = isLoading || isRefetching;
+  const isPortfolioError = isError || isRefetchError;
+
+  useEffect(() => {
+    if (!isPortfolioLoading && isPortfolioError) notifyError('error.default');
+  }, [isPortfolioLoading, isPortfolioError, notifyError]);
 
   return {
     portfolioData: data,
-    isPortfolioLoading: isLoading || isRefetching,
-    isPortfolioError: isError || isRefetchError,
+    isPortfolioLoading,
+    isPortfolioError,
     refetchPortfolio: refetch
   };
 };

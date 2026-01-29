@@ -15,7 +15,7 @@ const createStyles = (colors: ColorsType) => ({
   },
   main: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: colors.background.primary,
     padding: 16,
   },
 });

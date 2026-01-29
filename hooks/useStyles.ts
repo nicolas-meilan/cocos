@@ -9,7 +9,7 @@ export type { ColorsType };
 
 const useStyles = <T extends {}>(
   styleFn?: (colors: ColorsType, theme: Theme) => T
-): { colors: ColorsType; styles: T } => {
+): { colors: ColorsType; styles: T, theme: Theme } => {
   const { theme } = useAppTheme();
   const colors = useMemo(() => Colors[theme], [theme]);
   const styles = useMemo(() => {
@@ -23,6 +23,7 @@ const useStyles = <T extends {}>(
   return {
     colors,
     styles,
+    theme,
   };
 };
 

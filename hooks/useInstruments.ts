@@ -1,7 +1,9 @@
 import { TANKSTANK_DEFAULT_OPTIONS } from '@/api/constants';
 import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import Api from '../api/Api';
 import { Instruments } from '../api/endpoints/cocosChallengeEndpoints';
+import { useInAppNotification } from './useInAppNotification';
 
 export type InstrumentType = {
   id: number;
@@ -20,6 +22,8 @@ const queryFn = async () => {
 };
 
 const useInstruments = () => {
+  const { notifyError } = useInAppNotification();
+
   const {
     data,
     isLoading,
@@ -33,10 +37,17 @@ const useInstruments = () => {
     ...TANKSTANK_DEFAULT_OPTIONS,
   });
 
+  const isInstrumentsLoading = isLoading || isRefetching;
+  const isInstrumentsError = isError || isRefetchError;
+
+  useEffect(() => {
+    if (!isInstrumentsLoading && isInstrumentsError) notifyError('error.default');
+  }, [isInstrumentsLoading, isInstrumentsError, notifyError]);
+
   return {
     instrumentsData: data,
-    isInstrumentsLoading: isLoading || isRefetching,
-    isInstrumentsError: isError || isRefetchError,
+    isInstrumentsLoading,
+    isInstrumentsError,
     refetchInstruments: refetch
   };
 };

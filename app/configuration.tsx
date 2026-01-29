@@ -1,18 +1,25 @@
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { View } from 'react-native';
+import { Switch, TextStyle, View, ViewStyle } from 'react-native';
 
-import Button from '@/components/Button';
 import Header from '@/components/Header';
 import Screen from '@/components/Screen';
 import Text from '@/components/Text';
 import { useAppTheme } from '@/contexts/ThemeContext';
 import useStyles, { type ColorsType, type Theme } from '@/hooks/useStyles';
+import { Picker } from '@react-native-picker/picker';
+import { useState } from 'react';
 
-export const createConfigurationStyles = (colors: ColorsType, theme: Theme) => ({
-  safeArea: {
-    flex: 1,
-  },
+type ConfigurationStylesType = {
+  container: ViewStyle;
+  settingContainer: ViewStyle;
+  settingLabel: TextStyle;
+  pickerContainer: ViewStyle;
+  switchContainer: ViewStyle;
+  switch: ViewStyle;
+};
+
+export const createConfigurationStyles = (colors: ColorsType, theme: Theme): ConfigurationStylesType => ({
   container: {
     flex: 1,
     paddingHorizontal: 20,
@@ -24,13 +31,23 @@ export const createConfigurationStyles = (colors: ColorsType, theme: Theme) => (
   settingLabel: {
     marginBottom: 16,
   },
-  languageButtons: {
-    flexDirection: 'row' as const,
-    gap: 12,
+  pickerContainer: {
+    borderColor: colors.text.primary,
+    borderWidth: 1,
+    borderRadius: 8,
   },
-  themeButtons: {
-    flexDirection: 'row' as const,
+  switchContainer: {
+    flexDirection: 'row',
+    borderColor: colors.text.primary,
+    borderWidth: 1,
+    borderRadius: 8,
+    alignItems: 'center',
+    alignSelf: 'flex-start',
     gap: 12,
+    padding: 8,
+  },
+  switch: {
+    width: 45,
   },
 });
 
@@ -40,15 +57,19 @@ const ConfigurationScreen = () => {
   const { i18n } = useTranslation();
   const router = useRouter();
   const { theme, setTheme } = useAppTheme();
-  const { styles } = useStyles(createConfigurationStyles);
+  const { styles, colors } = useStyles(createConfigurationStyles);
 
+  const [selectedLanguage, setSelectedLanguage] = useState<string>(i18n.language);
+  const [isDarkModeEnabled, setIsDarkModeEnabled] = useState<boolean>(theme === 'dark');
 
   const handleLanguageChange = (language: string) => {
     i18n.changeLanguage(language);
+    setSelectedLanguage(language);
   };
 
-  const handleThemeChange = (mode: 'light' | 'dark') => {
-    setTheme(mode);
+  const handleThemeChange = (isEnabled: boolean) => {
+    setIsDarkModeEnabled(isEnabled);
+    setTheme(isEnabled ? 'dark' : 'light');
   };
 
   return (
@@ -61,41 +82,30 @@ const ConfigurationScreen = () => {
       />
       <View style={styles.settingContainer}>
         <Text size="medium" color="primary" style={styles.settingLabel} i18nKey="configuration.language" />
-
-        <View style={styles.languageButtons}>
-          <Button
-            type={i18n.language === 'en' ? 'primary' : 'secondary'}
-            onPress={() => handleLanguageChange('en')}
-            style={{ flex: 1 }}>
-            {i18n.t('configuration.english')}
-          </Button>
-
-          <Button
-            type={i18n.language === 'es' ? 'primary' : 'secondary'}
-            onPress={() => handleLanguageChange('es')}
-            style={{ flex: 1 }}>
-            {i18n.t('configuration.spanish')}
-          </Button>
+        <View style={styles.pickerContainer}>
+          <Picker
+            mode="dropdown"
+            selectedValue={selectedLanguage}
+            style={{ color: colors.text.primary }}
+            dropdownIconColor={colors.text.primary}
+            onValueChange={(itemValue) => handleLanguageChange(itemValue)}
+          >
+            <Picker.Item label={i18n.t('configuration.english')} value="en" />
+            <Picker.Item label={i18n.t('configuration.spanish')} value="es" />
+          </Picker>
         </View>
       </View>
-
       <View style={styles.settingContainer}>
-        <Text size="medium" color="primary" style={styles.settingLabel} i18nKey="configuration.theme" />
-
-        <View style={styles.themeButtons}>
-          <Button
-            type={theme === 'light' ? 'primary' : 'secondary'}
-            onPress={() => handleThemeChange('light')}
-            style={{ flex: 1 }}>
-            {i18n.t('configuration.light')}
-          </Button>
-
-          <Button
-            type={theme === 'dark' ? 'primary' : 'secondary'}
-            onPress={() => handleThemeChange('dark')}
-            style={{ flex: 1 }}>
-            {i18n.t('configuration.dark')}
-          </Button>
+        <View style={styles.switchContainer}>
+          <Switch
+            trackColor={{ false: colors.background.secondary, true: colors.background.secondary }}
+            thumbColor={colors.fallback.info}
+            ios_backgroundColor={colors.background.secondary}
+            onValueChange={handleThemeChange}
+            value={isDarkModeEnabled}
+            style={styles.switch}
+          />
+          <Text size="medium" color="primary" i18nKey="configuration.dark" />
         </View>
       </View>
     </Screen>

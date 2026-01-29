@@ -4,6 +4,8 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
+import InAppNotification from '@/components/InAppNotification';
+import { InAppNotificationProvider } from '@/contexts/InAppNotificationContext';
 import ThemeProvider, { useAppTheme } from '@/contexts/ThemeContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -33,7 +35,10 @@ const RootLayout = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <RootLayoutContent />
+        <InAppNotificationProvider>
+          <RootLayoutContent />
+          <InAppNotification />
+        </InAppNotificationProvider>
       </ThemeProvider>
     </QueryClientProvider>
 

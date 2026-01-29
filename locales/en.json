@@ -27,5 +27,8 @@
     "dark": "🌙 Dark",
     "comingSoon": "Coming soon..."
   },
-  "currency": "USD"
+  "error": {
+    "default": "Something went wrong. Please try again."
+  },
+  "currency": "ARS"
 }

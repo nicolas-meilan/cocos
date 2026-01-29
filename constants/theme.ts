@@ -11,11 +11,20 @@ export type ColorsType = {
     secondary: string;
     inverted: string;
   };
-  background: string;
+  background: {
+    primary: string;
+    secondary: string;
+  }
   tint: string;
   icon: string;
   tabIconDefault: string;
   tabIconSelected: string;
+  fallback: {
+    info: string;
+    warning: string;
+    error: string;
+    success: string;
+  }
   button: {
     primary: {
       background: string;
@@ -52,13 +61,22 @@ export const Colors: { [key in Theme]: ColorsType } = {
     text: {
       primary: '#11181C',
       secondary: '#687076',
-      inverted: '#000',
+      inverted: '#ECEDEE',
     },
-    background: '#fff',
+    background: {
+      primary: '#FFFFFF',
+      secondary: '#d4d4d4',
+    },
     tint: '#0a7ea4',
     icon: '#687076',
     tabIconDefault: '#687076',
     tabIconSelected: '#0a7ea4',
+    fallback: {
+      info: '#007AFF',
+      warning: '#FF9500',
+      error: '#FF3B30',
+      success: '#34C759',
+    },
     button: {
       primary: {
         background: '#0a7ea4',
@@ -90,13 +108,22 @@ export const Colors: { [key in Theme]: ColorsType } = {
     text: {
       primary: '#ECEDEE',
       secondary: '#9BA1A6',
-      inverted: '#000',
+      inverted: '#11181C',
     },
-    background: '#151718',
+    background: {
+      primary: '#151718',
+      secondary: '#2a2a2a',
+    },
     tint: '#fff',
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',
     tabIconSelected: '#fff',
+    fallback: {
+      info: '#007AFF',
+      warning: '#FF9500',
+      error: '#FF3B30',
+      success: '#34C759',
+    },
     button: {
       primary: {
         background: '#0a7ea4',
