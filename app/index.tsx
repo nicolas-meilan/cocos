@@ -1,3 +1,7 @@
-import Home from './home';
+import { Redirect } from 'expo-router';
 
-export default Home;
+const Index = () => {
+  return <Redirect href="/home/portfolio" />;
+}
+
+export default Index;

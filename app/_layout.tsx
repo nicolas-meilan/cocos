@@ -5,8 +5,10 @@ import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
 import ThemeProvider, { useAppTheme } from '@/contexts/ThemeContext';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 initializeI18n();
+const queryClient = new QueryClient();
 
 const RootLayoutContent = () => {
   const { theme } = useAppTheme();
@@ -14,13 +16,12 @@ const RootLayoutContent = () => {
   return (
     <NavigationThemeProvider value={theme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen 
-          name="configuration" 
-          options={{ 
+        <Stack.Screen name="home" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="configuration"
+          options={{
             headerShown: false,
-          }} 
+          }}
         />
       </Stack>
       <StatusBar style="auto" />
@@ -30,9 +31,12 @@ const RootLayoutContent = () => {
 
 const RootLayout = () => {
   return (
-    <ThemeProvider>
-      <RootLayoutContent />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <RootLayoutContent />
+      </ThemeProvider>
+    </QueryClientProvider>
+
   );
 };
 
