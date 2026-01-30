@@ -1,8 +1,9 @@
 import { useTranslation } from 'react-i18next';
-import { Switch, TextStyle, View, ViewStyle } from 'react-native';
+import { Switch, View, ViewStyle } from 'react-native';
 
 import Header from '@/components/Header';
 import Screen from '@/components/Screen';
+import { Spacer } from '@/components/Spacer';
 import Text from '@/components/Text';
 import { useAppTheme } from '@/contexts/ThemeContext';
 import useStyles, { type ColorsType, type Theme } from '@/hooks/useStyles';
@@ -11,26 +12,12 @@ import { debounce } from 'lodash';
 import { useCallback, useState } from 'react';
 
 type ConfigurationStylesType = {
-  container: ViewStyle;
-  settingContainer: ViewStyle;
-  settingLabel: TextStyle;
   pickerContainer: ViewStyle;
   switchContainer: ViewStyle;
   switch: ViewStyle;
 };
 
 export const createConfigurationStyles = (colors: ColorsType, theme: Theme): ConfigurationStylesType => ({
-  container: {
-    flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 24,
-  },
-  settingContainer: {
-    marginTop: 24,
-  },
-  settingLabel: {
-    marginBottom: 16,
-  },
   pickerContainer: {
     borderColor: colors.text.primary,
     borderWidth: 1,
@@ -78,13 +65,15 @@ const ConfigurationScreen = () => {
   }, DEBOUNCE, DEBOUNCE_CONFIG), []);
 
   return (
-    <Screen style={styles.container}>
+    <Screen>
       <Header
         hasBack
         title="configuration.title"
       />
-      <View style={styles.settingContainer}>
-        <Text size="medium" color="primary" style={styles.settingLabel} i18nKey="configuration.language" />
+      <Spacer size={24} />
+      <View>
+        <Text size="medium" color="primary" i18nKey="configuration.language" />
+        <Spacer size={16} />
         <View style={styles.pickerContainer}>
           <Picker
             mode="dropdown"
@@ -98,7 +87,8 @@ const ConfigurationScreen = () => {
           </Picker>
         </View>
       </View>
-      <View style={styles.settingContainer}>
+      <View>
+        <Spacer size={24} />
         <View style={styles.switchContainer}>
           <Switch
             trackColor={{ false: colors.background.secondary, true: colors.background.secondary }}

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Header from '@/components/Header';
 import Pill from '@/components/Pill';
 import Screen from '@/components/Screen';
+import { Spacer } from '@/components/Spacer';
 import TotalBalance from '@/components/TotalBalance';
 import useStyles from '@/hooks/useStyles';
 import { debounce } from 'lodash';
@@ -17,13 +18,11 @@ enum Tabs {
 
 const createHomeStyles = () => ({
   tabContainer: {
-    flexDirection: 'row' as const,
-    paddingVertical: 16,
+    flexDirection: 'row',
     gap: 8,
   },
   contentContainer: {
     flex: 1,
-    paddingVertical: 16,
   },
   content: {
     gap: 12,
@@ -51,15 +50,23 @@ const Home = () => {
   const isMarketTab = pathname.endsWith(`/${Tabs.Market}`);
 
   const goToPortfolio = useCallback(debounce(() => {
+    if (isPortfolioTab) return;
+
     router.push(`/${Tabs.Portfolio}`);
-  }, TABS_DEBOUNCE, TABS_DEBOUNCE_CONFIG), []);
+  }, TABS_DEBOUNCE, TABS_DEBOUNCE_CONFIG), [isPortfolioTab]);
 
   const goToMarket = useCallback(debounce(() => {
+    if (isMarketTab) return;
+
     router.push(`/${Tabs.Market}`);
-  }, TABS_DEBOUNCE, TABS_DEBOUNCE_CONFIG), []);
+  }, TABS_DEBOUNCE, TABS_DEBOUNCE_CONFIG), [isMarketTab]);
 
   const goToConfiguration = useCallback(debounce(() => {
     router.push('/configuration');
+  }, TABS_DEBOUNCE, TABS_DEBOUNCE_CONFIG), []);
+
+  const goToSearch = useCallback(debounce(() => {
+    router.push('/(modals)/search');
   }, TABS_DEBOUNCE, TABS_DEBOUNCE_CONFIG), []);
 
   return (
@@ -69,8 +76,10 @@ const Home = () => {
         leftIcon="account-circle"
         rightIcon="search"
         onPressLeftIcon={goToConfiguration}
+        onPressRightIcon={goToSearch}
       />
       <TotalBalance />
+      <Spacer size={16} />
       <View style={styles.tabContainer}>
         <Pill
           isActive={isPortfolioTab}
@@ -83,6 +92,7 @@ const Home = () => {
           {t('market.title')}
         </Pill>
       </View>
+      <Spacer size={16} />
       <Slot />
     </Screen>
   );

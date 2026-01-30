@@ -42,7 +42,7 @@ const useInstruments = () => {
 
   useEffect(() => {
     if (!isInstrumentsLoading && isInstrumentsError) notifyError('error.default');
-  }, [isInstrumentsLoading, isInstrumentsError, notifyError]);
+  }, [isInstrumentsLoading, isInstrumentsError]);
 
   return {
     instrumentsData: data,

@@ -17,7 +17,12 @@ const RootLayoutContent = () => {
 
   return (
     <NavigationThemeProvider value={theme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack screenOptions={{ headerShown: false }} />
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen
+          name="(modals)"
+          options={{ presentation: 'transparentModal' }}
+        />
+      </Stack>
       <StatusBar style="auto" />
     </NavigationThemeProvider>
   );

@@ -16,6 +16,10 @@
   "market": {
     "title": "Mercado"
   },
+  "search": {
+    "placeholder": "Buscar...",
+    "emptyList": "Escribe al menos 3 caracteres para buscar un instrumento"
+  },
   "configuration": {
     "title": "Configuración",
     "language": "Idioma",

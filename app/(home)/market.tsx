@@ -4,7 +4,7 @@ import SingleLineLayout from '@/components/skeleton/SingleLineLayout';
 import SkeletonList from '@/components/skeleton/SkeletonList';
 import useInstruments, { InstrumentType } from '@/hooks/useInstruments';
 import usePull2Refresh from '@/hooks/usePull2Refresh';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { FlatList, ScrollView } from 'react-native';
 
 const renderItem = ({ item }: { item: InstrumentType }) => (
@@ -27,6 +27,8 @@ const Markets = () => {
     loading: isInstrumentsLoading,
   });
 
+  const emptyList = useMemo(() => <EmptyList text="common.emptyList" iconName="pan-tool"/>, []);
+
   return (
     <ScrollView showsVerticalScrollIndicator={false} refreshControl={refreshControl}>
       <SkeletonList
@@ -40,7 +42,7 @@ const Markets = () => {
           keyExtractor={keyExtractor}
           getItemLayout={getItemLayout}
           scrollEnabled={false}
-          ListEmptyComponent={EmptyList}
+          ListEmptyComponent={emptyList}
         />
       </SkeletonList>
     </ScrollView>

@@ -12,23 +12,24 @@ interface HeaderProps {
   leftIcon?: string;
   rightIcon?: string;
   hasBack?: boolean;
+  hasClose?: boolean;
   onPressLeftIcon?: () => void;
   onPressRightIcon?: () => void;
 }
 
 export const createHeaderStyles = (colors: ColorsType, theme: Theme) => ({
   header: {
-    flexDirection: 'row' as const,
-    justifyContent: 'space-between' as const,
-    alignItems: 'center' as const,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   headerLeft: {
-    flexDirection: 'row' as const,
-    alignItems: 'center' as const,
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 12,
   },
   title: {
-    fontWeight: '600' as const,
+    fontWeight: '600',
   },
   backButton: {
     padding: 8,
@@ -43,6 +44,7 @@ const Header = ({
   leftIcon,
   rightIcon,
   hasBack = false,
+  hasClose = false,
   onPressLeftIcon,
   onPressRightIcon,
 }: HeaderProps) => {
@@ -71,6 +73,11 @@ const Header = ({
       {rightIcon && (
         <TouchableOpacity onPress={onPressRightIcon}>
           <Icon size={28} name={rightIcon} color={colors.tint} />
+        </TouchableOpacity>
+      )}
+      {hasClose && (
+        <TouchableOpacity onPress={handlePressBack} style={styles.backButton}>
+          <Icon size={24} name="close" color={colors.tint} />
         </TouchableOpacity>
       )}
     </View>

@@ -1,29 +1,26 @@
 import usePortfolio from "@/hooks/usePortfolio";
 import useStyles from "@/hooks/useStyles";
 import { useMemo } from "react";
-import { TextStyle, View, ViewStyle } from "react-native";
+import { TextStyle, ViewStyle } from "react-native";
 import SingleLineLayout from "./skeleton/SingleLineLayout";
 import Skeleton from "./skeleton/Skeleton";
+import { Spacer } from "./Spacer";
 import Text from "./Text";
 
 type TotalBalanceStyles = {
-  balance: ViewStyle;
   skeleton: ViewStyle;
   balanceText: TextStyle;
   currency: TextStyle;
 };
 
 const creteStyle = (): TotalBalanceStyles => ({
-  balance: {
-    paddingVertical: 32,
-  },
   skeleton: {
     alignItems: 'center',
     justifyContent: 'center',
   },
   balanceText: {
     fontSize: 42,
-    fontWeight: 'bold' as const,
+    fontWeight: 'bold',
   },
   currency: {
     fontSize: 12,
@@ -39,9 +36,10 @@ const TotalBalance = () => {
     ?.reduce((acc, item) => acc + item.quantity * item.last_price, 0) || 0, [portfolioData]);
 
   return (
-    <View style={styles.balance}>
+    <>
+      <Spacer size={32} />
       <Skeleton
-        isLoading={!portfolioData && !isPortfolioLoading && !isPortfolioError}
+        isLoading={!portfolioData && isPortfolioLoading && !isPortfolioError}
         Layout={SingleLineLayout}
         style={styles.skeleton}
         containerHeight={90}
@@ -52,7 +50,8 @@ const TotalBalance = () => {
         </Text>
         <Text size="small" style={styles.currency} i18nKey='currency' />
       </Skeleton>
-    </View>
+      <Spacer size={32} />
+    </>
   )
 };
 

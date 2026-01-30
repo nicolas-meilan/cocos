@@ -2,6 +2,7 @@ import useStyles from '@/hooks/useStyles';
 import React from 'react';
 import { TextStyle, View, ViewStyle } from 'react-native';
 import Icon from './Icon';
+import { Spacer } from './Spacer';
 import Text from './Text';
 
 type EmptyListStyles = {
@@ -13,7 +14,6 @@ const createStyles = (): EmptyListStyles => ({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 52,
   },
   text: {
     marginTop: 16,
@@ -21,14 +21,25 @@ const createStyles = (): EmptyListStyles => ({
   },
 });
 
-const EmptyList = () => {
+type EmptyListProps = {
+  text: string;
+  iconName: string;
+};
+
+const EmptyList = ({
+  text,
+  iconName,
+}: EmptyListProps) => {
   const { styles } = useStyles(createStyles);
 
   return (
-    <View style={styles.container}>
-      <Icon name="pan-tool" customSize={42} type="secondary" />
-      <Text style={styles.text} i18nKey="common.emptyList" />
-    </View>
+    <>
+      <Spacer size={52} />
+      <View style={styles.container}>
+        <Icon name={iconName} customSize={42} type="secondary" />
+        <Text style={styles.text} i18nKey={text} />
+      </View>
+    </>
   );
 };
 

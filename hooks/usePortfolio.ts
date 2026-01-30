@@ -43,7 +43,7 @@ const usePortfolio = () => {
 
   useEffect(() => {
     if (!isPortfolioLoading && isPortfolioError) notifyError('error.default');
-  }, [isPortfolioLoading, isPortfolioError, notifyError]);
+  }, [isPortfolioLoading, isPortfolioError]);
 
   return {
     portfolioData: data,
