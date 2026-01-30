@@ -4,31 +4,18 @@ import { useTranslation } from 'react-i18next';
 import Header from '@/components/Header';
 import Pill from '@/components/Pill';
 import Screen from '@/components/Screen';
-import Text from '@/components/Text';
-import useStyles, { type ColorsType, type Theme } from '@/hooks/useStyles';
+import TotalBalance from '@/components/TotalBalance';
+import useStyles from '@/hooks/useStyles';
 import { debounce } from 'lodash';
 import { useCallback } from 'react';
-import { StyleProp, View, ViewStyle } from 'react-native';
+import { View } from 'react-native';
 
 enum Tabs {
   Portfolio = 'portfolio',
   Market = 'market',
 }
 
-const createHomeStyles = (colors: ColorsType, theme: Theme) => ({
-  balance: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 32,
-  },
-  balanceText: {
-    fontSize: 42,
-    fontWeight: 'bold' as const,
-  },
-  currency: {
-    fontSize: 12,
-    opacity: 0.6,
-  },
+const createHomeStyles = () => ({
   tabContainer: {
     flexDirection: 'row' as const,
     paddingVertical: 16,
@@ -58,8 +45,6 @@ const Home = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const balance = 15250.50;
-
   const { styles } = useStyles(createHomeStyles);
 
   const isPortfolioTab = pathname.endsWith(`/${Tabs.Portfolio}`);
@@ -85,13 +70,7 @@ const Home = () => {
         rightIcon="search"
         onPressLeftIcon={goToConfiguration}
       />
-      <View style={styles.balance as StyleProp<ViewStyle>}>
-        <Text size="small" i18nKey="home.totalBalance" />
-        <Text style={styles.balanceText}>
-          {balance.toFixed(2)}
-        </Text>
-        <Text size="small" style={styles.currency} i18nKey='currency' />
-      </View>
+      <TotalBalance />
       <View style={styles.tabContainer}>
         <Pill
           isActive={isPortfolioTab}

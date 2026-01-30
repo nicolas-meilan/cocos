@@ -1,3 +1,4 @@
+import EmptyList from '@/components/EmptyList';
 import PortfolioItem, { ITEM_SIZE } from '@/components/PortfolioItem';
 import SingleLineLayout from '@/components/skeleton/SingleLineLayout';
 import SkeletonList from '@/components/skeleton/SkeletonList';
@@ -18,7 +19,6 @@ const getItemLayout = (_: any, index: number) => ({
   index,
 });
 
-// TODO MANAGE ERRORS & P2R
 const Portfolio = () => {
   const { portfolioData, isPortfolioLoading, refetchPortfolio } = usePortfolio();
 
@@ -40,6 +40,7 @@ const Portfolio = () => {
           keyExtractor={keyExtractor}
           getItemLayout={getItemLayout}
           scrollEnabled={false}
+          ListEmptyComponent={EmptyList}
         />
       </SkeletonList>
     </ScrollView>

@@ -8,7 +8,7 @@ import Text from './Text';
 type NotificationStyles = {
   container: ViewStyle;
   notification: ViewStyle;
-  boldText: TextStyle;
+  notificationText: TextStyle;
 };
 
 export const createNotificationStyles = (colors: ColorsType, theme: Theme): NotificationStyles => ({
@@ -22,10 +22,12 @@ export const createNotificationStyles = (colors: ColorsType, theme: Theme): Noti
     alignItems: 'center',
   },
   notification: {
+    flex: 1,
     borderRadius: 8,
     padding: 16,
   },
-  boldText: {
+  notificationText: {
+    textAlign: 'center',
     fontWeight: 'bold',
   },
 });
@@ -45,7 +47,7 @@ const InAppNotification = () => {
       exiting={SlideOutDown}
     >
       <View style={[styles.notification, { backgroundColor: notificationColor }]}>
-        <Text i18nKey={notification.message} color="inverted" style={styles.boldText} />
+        <Text i18nKey={notification.message} color="inverted" style={styles.notificationText} />
       </View>
     </Animated.View >
   );

@@ -1,4 +1,7 @@
 {
+  "common": {
+    "emptyList": "No hay elementos"
+  },
   "app": {
     "name": "cocos challenge"
   },
@@ -21,7 +24,7 @@
     "dark": "🌙 Modo oscuro"
   },
   "error": {
-    "default": "Algo salió mal. Por favor, intenta nuevamente."
+    "default": "Algo salió mal. Por favor, intenta nuevamente"
   },
   "currency": "ARS"
 }

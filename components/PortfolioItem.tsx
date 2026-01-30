@@ -1,3 +1,4 @@
+import { PortfolioType } from "@/hooks/usePortfolio";
 import useStyles, { ColorsType } from "@/hooks/useStyles";
 import { useTranslation } from "react-i18next";
 import { View, ViewStyle } from "react-native";
@@ -5,13 +6,7 @@ import Icon from "./Icon";
 import Text from "./Text";
 
 type PortfolioItemProps = {
-  portfolioItem: {
-    ticker: string;
-    quantity: number;
-    last_price: number;
-    close_price: number;
-    avg_cost_price: number;
-  }
+  portfolioItem: PortfolioType;
 };
 
 type portfolioStyles = {
@@ -60,7 +55,7 @@ const PortfolioItem = ({ portfolioItem }: PortfolioItemProps) => {
         <Text>
           {portfolioItem.ticker}
         </Text>
-        <Text>
+        <Text color="secondary">
           {`${portfolioItem.last_price} ${currency}`}
         </Text>
       </View>

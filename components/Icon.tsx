@@ -1,6 +1,5 @@
 import useStyles from '@/hooks/useStyles';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { SymbolWeight } from 'expo-symbols';
 import { ComponentProps } from 'react';
 import { OpaqueColorValue, type StyleProp, type TextStyle } from 'react-native';
 
@@ -13,25 +12,26 @@ const sizeMap: Record<IconSize, number> = {
   large: 20,
 };
 
+type IconProps = {
+  name: string;
+  size?: IconSize | number;
+  type?: IconType;
+  color?: string | OpaqueColorValue;
+  style?: StyleProp<TextStyle>;
+  customSize?: number;
+};
+
 const Icon = ({
   name,
   size = 'medium',
   type = 'primary',
   color,
   style,
-  weight,
-}: {
-  name: string;
-  size?: IconSize | number;
-  type?: IconType;
-  color?: string | OpaqueColorValue;
-  style?: StyleProp<TextStyle>;
-  weight?: SymbolWeight;
-}) => {
+  customSize,
+}: IconProps) => {
   const { colors } = useStyles();
 
-  const iconSize = typeof size === 'string' ? sizeMap[size] : size;
-
+  const iconSize = customSize || (typeof size === 'string' ? sizeMap[size] : size);
   const iconColor = color || colors.text[type];
 
   return (
