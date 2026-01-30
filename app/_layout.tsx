@@ -6,11 +6,10 @@ import 'react-native-reanimated';
 
 import InAppNotification from '@/components/InAppNotification';
 import { InAppNotificationProvider } from '@/contexts/InAppNotificationContext';
+import QueryClientProvider from '@/contexts/QueryClient';
 import ThemeProvider, { useAppTheme } from '@/contexts/ThemeContext';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 initializeI18n();
-const queryClient = new QueryClient();
 
 const RootLayoutContent = () => {
   const { theme } = useAppTheme();
@@ -30,7 +29,7 @@ const RootLayoutContent = () => {
 
 const RootLayout = () => {
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider>
       <ThemeProvider>
         <InAppNotificationProvider>
           <RootLayoutContent />
