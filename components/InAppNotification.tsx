@@ -1,4 +1,4 @@
-import { NotificationType, useInAppNotificationContext } from '@/contexts/InAppNotificationContext';
+import { useInAppNotificationContext } from '@/contexts/InAppNotificationContext';
 import useStyles, { type ColorsType, type Theme } from '@/hooks/useStyles';
 import React from 'react';
 import { TextStyle, View, ViewStyle } from 'react-native';
@@ -38,15 +38,13 @@ const InAppNotification = () => {
 
   if (!notification?.visible) return null;
 
-  const notificationColor = notification.type === NotificationType.ERROR ? colors.fallback.error : colors.fallback.success;
-
   return (
     <Animated.View
       style={styles.container}
       entering={SlideInDown}
       exiting={SlideOutDown}
     >
-      <View style={[styles.notification, { backgroundColor: notificationColor }]}>
+      <View style={[styles.notification, { backgroundColor: colors.fallback[notification.type] }]}>
         <Text i18nKey={notification.message} color="inverted" style={styles.notificationText} />
       </View>
     </Animated.View >

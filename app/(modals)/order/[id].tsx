@@ -3,10 +3,12 @@ import Header from "@/components/Header";
 import Screen from "@/components/Screen";
 import { Spacer } from "@/components/Spacer";
 import TextInput, { TextInputType } from "@/components/TextInput";
+import useCreateOrder, { OrderExecutedStatus, OrderSide, OrderType } from "@/hooks/useCreateOrder";
+import { useInAppNotification } from "@/hooks/useInAppNotification";
 import usePortfolio from "@/hooks/usePortfolio";
 import useStyles, { ColorsType } from "@/hooks/useStyles";
 import { Picker } from "@react-native-picker/picker";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { debounce } from "lodash";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -53,11 +55,7 @@ const createStyle = (colors: ColorsType): OrderStyle => ({
   },
 });
 
-enum PriceOperation {
-  Market = 'MARKET',
-  Limit = 'LIMIT',
-}
-
+const NOTIFICATION_TIME = 6000;
 const DEBOUNCE_BUTTONS = 500;
 const DEBOUNCE_SELECT = 1000;
 const DEBOUNCE_CONFIG = {
@@ -71,11 +69,12 @@ const Order = () => {
   const { styles, colors } = useStyles(createStyle);
 
   const { portfolioData } = usePortfolio();
-
-  const title = params.tickerName ? `${params.ticker} - ${params.tickerName}` : params.ticker;
+  const { createOrderAsync, isCreateOrderLoading } = useCreateOrder();
+  const { notifySuccess, notifyError, notifyWarning } = useInAppNotification();
+  const router = useRouter();
 
   const [isBuyOperation, setIsBuyOperation] = useState(true);
-  const [priceOperation, setPriceOperation] = useState<PriceOperation>(PriceOperation.Market);
+  const [orderType, setOrderType] = useState<OrderType>(OrderType.Market);
 
   const [quantity, setQuantity] = useState('');
   const [quantityError, setQuantityError] = useState<string | undefined>();
@@ -83,22 +82,29 @@ const Order = () => {
   const [limitPrice, setLimitPrice] = useState('');
   const [limitPriceError, setLimitPriceError] = useState<string | undefined>();
 
-const {
-  sellDisabled,
-  maxQuantity,
-} = useMemo(() => {
-  if (Number(params.quantity)) return { sellDisabled: false, maxQuantity: Number(params.quantity) };
-  if (!portfolioData?.length) return { sellDisabled: true, maxQuantity: 0 };
+  const title = params.tickerName ? `${params.ticker} - ${params.tickerName}` : params.ticker;
+  const dispatchNotification = {
+    [OrderExecutedStatus.Filled]: notifySuccess,
+    [OrderExecutedStatus.Pending]: notifyWarning,
+    [OrderExecutedStatus.Rejected]: notifyError,
+  }
 
-  const currentItem = portfolioData.find(
-    ({ instrument_id }) => instrument_id.toString() === params.id
-  );
+  const {
+    sellDisabled,
+    maxQuantity,
+  } = useMemo(() => {
+    if (Number(params.quantity)) return { sellDisabled: false, maxQuantity: Number(params.quantity) };
+    if (!portfolioData?.length) return { sellDisabled: true, maxQuantity: 0 };
 
-  return {
-    sellDisabled: !currentItem,
-    maxQuantity: currentItem ? currentItem.quantity : 0,
-  };
-}, [params.id, params.quantity, portfolioData]);
+    const currentItem = portfolioData.find(
+      ({ instrument_id }) => instrument_id.toString() === params.id
+    );
+
+    return {
+      sellDisabled: !currentItem,
+      maxQuantity: currentItem ? currentItem.quantity : 0,
+    };
+  }, [params.id, params.quantity, portfolioData]);
 
   const onPressBuy = useCallback(
     debounce(() => setIsBuyOperation(true), DEBOUNCE_BUTTONS, DEBOUNCE_CONFIG),
@@ -111,8 +117,8 @@ const {
   );
 
   const onPriceOperationChange = useCallback(
-    debounce((value: PriceOperation) => {
-      setPriceOperation(value);
+    debounce((value: OrderType) => {
+      setOrderType(value);
     }, DEBOUNCE_SELECT),
     []
   );
@@ -166,7 +172,7 @@ const {
   );
 
   const validateLimitPrice = useCallback((): boolean => {
-    if (priceOperation !== PriceOperation.Limit) return true;
+    if (orderType !== OrderType.Limit) return true;
 
     if (!limitPrice) {
       setLimitPriceError('order.limitPriceRequired');
@@ -186,22 +192,33 @@ const {
     }
 
     return true;
-  }, [priceOperation, limitPrice]);
+  }, [orderType, limitPrice]);
 
-  const onPressContinue = useCallback(() => {
+  const onPressContinue = useCallback(debounce(async () => {
     const isQuantityValid = validateQuantity();
     const isLimitValid = validateLimitPrice();
 
     if (!isQuantityValid || !isLimitValid) return;
 
-    // TODO CONTINUE
-  }, [
+    try {
+      const response = await createOrderAsync({
+        instrument_id: params.id,
+        side: isBuyOperation ? OrderSide.Buy : OrderSide.Sell,
+        type: orderType,
+        quantity: quantity,
+        ...(orderType === OrderType.Limit ? { price: limitPrice } : {}),
+      });
+
+      dispatchNotification[response.status](t(`order.executed.${response.status}`, { id: response.id }), NOTIFICATION_TIME);
+      if (response.status !== OrderExecutedStatus.Rejected) router.back();
+    } catch {}
+  }, DEBOUNCE_BUTTONS, DEBOUNCE_CONFIG), [
     validateQuantity,
     validateLimitPrice,
     quantity,
     limitPrice,
     isBuyOperation,
-    priceOperation,
+    orderType,
     params.id,
   ]);
 
@@ -235,13 +252,13 @@ const {
         <View style={styles.pickerContainer}>
           <Picker
             mode="dropdown"
-            selectedValue={priceOperation}
+            selectedValue={orderType}
             style={{ color: colors.text.primary }}
             dropdownIconColor={colors.text.primary}
             onValueChange={onPriceOperationChange}
           >
-            <Picker.Item label={t('order.marketValue')} value={PriceOperation.Market} />
-            <Picker.Item label={t('order.limitValue')} value={PriceOperation.Limit} />
+            <Picker.Item label={t('order.marketValue')} value={OrderType.Market} />
+            <Picker.Item label={t('order.limitValue')} value={OrderType.Limit} />
           </Picker>
         </View>
         <Spacer size={24} />
@@ -255,7 +272,7 @@ const {
           error={!!quantityError}
           errorMessage={quantityError}
         />
-        {priceOperation === PriceOperation.Limit && (
+        {orderType === OrderType.Limit && (
           <>
             <Spacer size={24} />
             <TextInput
@@ -276,6 +293,7 @@ const {
       <Button
         i18nKey="common.continue"
         onPress={onPressContinue}
+        loading={isCreateOrderLoading}
       />
       <Spacer size={16} />
     </Screen>

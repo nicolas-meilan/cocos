@@ -1,8 +1,7 @@
-import { TouchableOpacity, View } from 'react-native';
+import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 import Icon from '@/components/Icon';
-import { ColorsType } from '@/constants/theme';
-import useStyles, { type Theme } from '@/hooks/useStyles';
+import useStyles from '@/hooks/useStyles';
 import { useRouter } from 'expo-router';
 import { useCallback } from 'react';
 import Text from './Text';
@@ -17,7 +16,14 @@ interface HeaderProps {
   onPressRightIcon?: () => void;
 }
 
-export const createHeaderStyles = (colors: ColorsType, theme: Theme) => ({
+type HeaderStyles = {
+  header: ViewStyle;
+  headerLeft: ViewStyle;
+  title: TextStyle;
+  backButton: ViewStyle;
+};
+
+export const createHeaderStyles = (): HeaderStyles => ({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -36,8 +42,6 @@ export const createHeaderStyles = (colors: ColorsType, theme: Theme) => ({
     marginLeft: -8,
   },
 });
-
-export type HeaderStyles = ReturnType<typeof createHeaderStyles>;
 
 const Header = ({
   title,

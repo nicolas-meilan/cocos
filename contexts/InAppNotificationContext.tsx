@@ -3,6 +3,7 @@ import React, { createContext, ReactNode, useContext, useRef, useState } from 'r
 export enum NotificationType {
   SUCCESS = 'success',
   ERROR = 'error',
+  WARNING = 'warning',
 }
 
 export type Notification = {
@@ -13,8 +14,9 @@ export type Notification = {
 
 export type InAppNotificationContextType = {
   notification: Notification | null;
-  dispatchSuccess: (message: string) => void;
-  dispatchError: (message: string) => void;
+  dispatchSuccess: (message: string, time?: number) => void;
+  dispatchError: (message: string, time?: number) => void;
+  dispatchWarning: (message: string, time?: number) => void;
 };
 
 export const IN_APP_NOTIFICATION_TIME = 4000;
@@ -25,7 +27,7 @@ export const InAppNotificationProvider = ({ children }: { children: ReactNode })
   const [notification, setNotification] = useState<Notification | null>(null);
   const timeoutRef = useRef<number | null>(null);
 
-  const dispatch = (message: string, type: NotificationType) => {
+  const dispatch = (message: string, type: NotificationType, time: number = IN_APP_NOTIFICATION_TIME) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
     setNotification({ message, type, visible: true });
@@ -33,14 +35,15 @@ export const InAppNotificationProvider = ({ children }: { children: ReactNode })
     timeoutRef.current = setTimeout(() => {
       setNotification(null);
       timeoutRef.current = null;
-    }, IN_APP_NOTIFICATION_TIME);
+    }, time);
   };
 
-  const dispatchSuccess = (message: string) => dispatch(message, NotificationType.SUCCESS);
-  const dispatchError = (message: string) => dispatch(message, NotificationType.ERROR);
+  const dispatchSuccess = (message: string, time?: number) => dispatch(message, NotificationType.SUCCESS, time);
+  const dispatchError = (message: string, time?: number) => dispatch(message, NotificationType.ERROR, time);
+  const dispatchWarning = (message: string, time?: number) => dispatch(message, NotificationType.WARNING, time);
 
   return (
-    <InAppNotificationContext.Provider value={{ notification, dispatchSuccess, dispatchError }}>
+    <InAppNotificationContext.Provider value={{ notification, dispatchSuccess, dispatchError, dispatchWarning }}>
       {children}
     </InAppNotificationContext.Provider>
   );

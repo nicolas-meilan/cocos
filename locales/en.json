@@ -33,7 +33,12 @@
     "limitPrice": "Limit price",
     "limitPriceRequired": "Please enter a limit price",
     "limitPriceZero": "Limit price must be greater than zero",
-    "limitPriceInvalid": "Price must have 2 decimal places"
+    "limitPriceInvalid": "Invalid price",
+    "executed": {
+      "FILLED": "Order no. {{id}} has been completed",
+      "PENDING": "Order no. {{id}} is pending",
+      "REJECTED": "Order no. {{id}} has failed"
+    }
   },
   "configuration": {
     "title": "Settings",

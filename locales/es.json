@@ -33,7 +33,12 @@
     "limitPrice": "Precio límite",
     "limitPriceRequired": "Ingresa un precio límite",
     "limitPriceZero": "El precio límite debe ser mayor a cero",
-    "limitPriceInvalid": "El precio debe tener 2 decimales"
+    "limitPriceInvalid": "El precio es inválido",
+    "executed": {
+      "FILLED": "La orden nº {{id}} ha sido completada",
+      "PENDING": "La orden nº {{id}} está pendiente",
+      "REJECTED": "La orden nº {{id}} no se pudo completar"
+    }
   },
   "configuration": {
     "title": "Configuración",
