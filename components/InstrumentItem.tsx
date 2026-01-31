@@ -1,7 +1,8 @@
 import { InstrumentType } from "@/hooks/useInstruments";
 import useStyles from "@/hooks/useStyles";
-import { useTranslation } from "react-i18next";
-import { View, ViewStyle } from "react-native";
+import { useRouter } from "expo-router";
+import { useCallback } from "react";
+import { TouchableOpacity, View, ViewStyle } from "react-native";
 import Icon from "./Icon";
 import Text from "./Text";
 
@@ -37,15 +38,28 @@ const createStyles = (): instrumentStyles => ({
 });
 
 const InstrumentItem = ({ instrumentItem }: InstrumentItemProps) => {
-  const { t } = useTranslation();
   const { styles, colors } = useStyles<instrumentStyles>(createStyles);
+  const router = useRouter();
 
   const instrumentReturn = (instrumentItem.last_price - instrumentItem.close_price) / instrumentItem.close_price * 100;
   const instrumentReturnPositive = instrumentReturn >= 0;
   const instrumentReturnIcon = instrumentReturnPositive ? 'arrow-upward' : 'arrow-downward';
 
+  const goToOrder = useCallback(() => {
+    router.push({
+      pathname: '/(modals)/order/[id]',
+      params: {
+        id: instrumentItem.id,
+        ticker: instrumentItem.ticker,
+        tickerName: instrumentItem.name,
+        lastPrice: instrumentItem.last_price,
+        quantity: 0,
+      }
+    });
+  }, [instrumentItem]);
+
   return (
-    <View style={styles.item}>
+    <TouchableOpacity style={styles.item} onPress={goToOrder}>
       <View style={[styles.column, { flex: 2 }]}>
         <Text>
           {instrumentItem.ticker}
@@ -68,7 +82,7 @@ const InstrumentItem = ({ instrumentItem }: InstrumentItemProps) => {
           />
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

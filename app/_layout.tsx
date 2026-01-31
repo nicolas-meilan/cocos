@@ -17,7 +17,7 @@ const RootLayoutContent = () => {
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen
           name="(modals)"
-          options={{ presentation: 'transparentModal' }}
+          options={{ presentation: 'modal' }}
         />
       </Stack>
       <StatusBar style="auto" />

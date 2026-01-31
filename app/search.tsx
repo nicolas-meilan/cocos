@@ -46,7 +46,7 @@ const Search = () => {
 
   return (
     <Screen>
-      <Header hasClose />
+      <Header hasBack />
       <Spacer size={16} />
       <TextInput
         placeholder={t('search.placeholder')}

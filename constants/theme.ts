@@ -19,6 +19,7 @@ export type ColorsType = {
   icon: string;
   tabIconDefault: string;
   tabIconSelected: string;
+  disabled: string;
   fallback: {
     info: string;
     warning: string;
@@ -71,6 +72,7 @@ export const Colors: { [key in Theme]: ColorsType } = {
     icon: '#687076',
     tabIconDefault: '#687076',
     tabIconSelected: '#0a7ea4',
+    disabled: '#687076',
     fallback: {
       info: '#007AFF',
       warning: '#FF9500',
@@ -118,6 +120,7 @@ export const Colors: { [key in Theme]: ColorsType } = {
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',
     tabIconSelected: '#fff',
+    disabled: '#687076',
     fallback: {
       info: '#007AFF',
       warning: '#FF9500',

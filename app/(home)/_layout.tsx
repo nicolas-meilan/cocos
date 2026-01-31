@@ -9,27 +9,20 @@ import TotalBalance from '@/components/TotalBalance';
 import useStyles from '@/hooks/useStyles';
 import { debounce } from 'lodash';
 import { useCallback } from 'react';
-import { View } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 
 enum Tabs {
   Portfolio = 'portfolio',
   Market = 'market',
 }
 
-const createHomeStyles = () => ({
+type HomeStylesType = {
+  tabContainer: ViewStyle;
+}
+const createHomeStyles = (): HomeStylesType => ({
   tabContainer: {
     flexDirection: 'row',
     gap: 8,
-  },
-  contentContainer: {
-    flex: 1,
-  },
-  content: {
-    gap: 12,
-  },
-  placeholder: {
-    opacity: 0.6,
-    marginTop: 16,
   },
 });
 
@@ -66,7 +59,7 @@ const Home = () => {
   }, TABS_DEBOUNCE, TABS_DEBOUNCE_CONFIG), []);
 
   const goToSearch = useCallback(debounce(() => {
-    router.push('/(modals)/search');
+    router.push('/search');
   }, TABS_DEBOUNCE, TABS_DEBOUNCE_CONFIG), []);
 
   return (

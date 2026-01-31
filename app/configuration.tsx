@@ -41,6 +41,7 @@ export const createConfigurationStyles = (colors: ColorsType, theme: Theme): Con
 export type ConfigurationStyles = ReturnType<typeof createConfigurationStyles>;
 
 const DEBOUNCE = 500;
+const DEBOUNCE_SELECT = 1000;
 const DEBOUNCE_CONFIG = {
   leading: true,
   trailing: false,
@@ -57,7 +58,7 @@ const ConfigurationScreen = () => {
   const handleLanguageChange = useCallback(debounce((language: string) => {
     i18n.changeLanguage(language);
     setSelectedLanguage(language);
-  }, DEBOUNCE, DEBOUNCE_CONFIG), []);
+  }, DEBOUNCE_SELECT), []);
 
   const handleThemeChange = useCallback(debounce((isEnabled: boolean) => {
     setIsDarkModeEnabled(isEnabled);

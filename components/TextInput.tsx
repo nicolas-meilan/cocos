@@ -26,6 +26,7 @@ export type TextInputProps = RNTextInputProps & {
   label?: string;
   leftIcon?: string;
   rightIcon?: string;
+  rightLabel?: string;
   type?: TextInputType;
   error?: boolean;
   borderColor?: string;
@@ -98,6 +99,7 @@ const TextInput = ({
   onBlur,
   leftIcon,
   rightIcon,
+  rightLabel,
   onPressLeftIcon,
   onPressRightIcon,
   style,
@@ -138,7 +140,7 @@ const TextInput = ({
   };
 
   const renderLeft = !!leftIcon;
-  const renderRight = !!(rightIcon || isPassword);
+  const renderRight = !!(rightIcon || isPassword || rightLabel);
 
   return (
     <TouchableOpacity
@@ -189,6 +191,7 @@ const TextInput = ({
                 <Icon name={showText ? 'eye-outline' : 'eye-off-outline'} size="large" />
               </TouchableOpacity>
             )}
+            {rightLabel && (<Text i18nKey={rightLabel} />)}
             {rightIcon && (
               <TouchableOpacity
                 onPress={onPressRightIcon}

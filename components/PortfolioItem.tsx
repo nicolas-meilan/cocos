@@ -1,7 +1,9 @@
 import { PortfolioType } from "@/hooks/usePortfolio";
 import useStyles, { ColorsType } from "@/hooks/useStyles";
+import { useRouter } from "expo-router";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { View, ViewStyle } from "react-native";
+import { TouchableOpacity, View, ViewStyle } from "react-native";
 import Icon from "./Icon";
 import Text from "./Text";
 
@@ -38,6 +40,7 @@ const createStyles = (colors: ColorsType): portfolioStyles => ({
 const PortfolioItem = ({ portfolioItem }: PortfolioItemProps) => {
   const { t } = useTranslation();
   const { styles, colors } = useStyles<portfolioStyles>(createStyles);
+  const router = useRouter();
 
   if (!portfolioItem.quantity) return null;
 
@@ -49,8 +52,20 @@ const PortfolioItem = ({ portfolioItem }: PortfolioItemProps) => {
   const assetPerfPositive = assetPerf >= 0;
   const perfIcon = assetPerfPositive ? 'arrow-upward' : 'arrow-downward';
 
+  const goToOrder = useCallback(() => {
+    router.push({
+      pathname: '/(modals)/order/[id]',
+      params: {
+        id: portfolioItem.instrument_id,
+        ticker: portfolioItem.ticker,
+        lastPrice: portfolioItem.last_price,
+        quantity: portfolioItem.quantity,
+      }
+    });
+  }, [portfolioItem]);
+
   return (
-    <View style={styles.item}>
+    <TouchableOpacity style={styles.item} onPress={goToOrder}>
       <View style={styles.column}>
         <Text>
           {portfolioItem.ticker}
@@ -81,7 +96,7 @@ const PortfolioItem = ({ portfolioItem }: PortfolioItemProps) => {
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

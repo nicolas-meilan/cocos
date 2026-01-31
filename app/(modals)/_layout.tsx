@@ -9,7 +9,7 @@ const ModalLayout = () => {
       }}
     >
       <Stack.Screen
-        name="search"
+        name="order/[id]"
         options={{
           animation: 'slide_from_bottom',
         }}

@@ -1,6 +1,7 @@
 {
   "common": {
-    "emptyList": "No items available"
+    "emptyList": "No items available",
+    "continue": "Continue"
   },
   "app": {
     "name": "cocos challenge"
@@ -19,6 +20,20 @@
   "search": {
     "placeholder": "Search...",
     "emptyList": "Type at least 3 characters to search for an instrument"
+  },
+  "order": {
+    "buy": "Buy",
+    "sell": "Sell",
+    "marketValue": "Market value",
+    "limitValue": "Limit value",
+    "quantity": "Quantity",
+    "quantityRequired": "Please enter a quantity",
+    "quantityZero": "Quantity must be greater than zero",
+    "quantityExceeded": "Quantity exceeds available amount",
+    "limitPrice": "Limit price",
+    "limitPriceRequired": "Please enter a limit price",
+    "limitPriceZero": "Limit price must be greater than zero",
+    "limitPriceInvalid": "Price must have 2 decimal places"
   },
   "configuration": {
     "title": "Settings",

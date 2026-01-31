@@ -8,8 +8,8 @@ export interface ButtonProps {
   type?: ButtonType;
   onPress: () => void;
   disabled?: boolean;
-  style?: ViewStyle;
-  children: string;
+  style?: ViewStyle | ViewStyle[];
+  i18nKey: string;
 }
 
 const Button = ({
@@ -17,7 +17,7 @@ const Button = ({
   onPress,
   disabled = false,
   style,
-  children,
+  i18nKey,
 }: ButtonProps) => {
   const { colors } = useStyles();
 
@@ -42,9 +42,7 @@ const Button = ({
       disabled={disabled}
       style={[buttonStyle, style]}
       activeOpacity={0.7}>
-      <Text size="medium" color="primary" style={{ color: buttonConfig.text }}>
-        {children}
-      </Text>
+      <Text size="medium" color="primary" style={{ color: buttonConfig.text }} i18nKey={i18nKey} />
     </TouchableOpacity>
   );
 };
